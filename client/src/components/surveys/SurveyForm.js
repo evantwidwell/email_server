@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom'
 import Dashboard from '../Dashboard';
 
 const FIELDS = [
-  { label: 'Survey Title', name: 'title'},
-  { label: 'Subject Line', name: 'subject'},
-  { label: 'Email Body', name: 'body'},
-  { label: 'Recipient List', name: 'emails'},
+  { label: 'Survey Title', name: 'title', noValue: 'You must provide a title'},
+  { label: 'Subject Line', name: 'subject', noValue: 'You must provide a subject'},
+  { label: 'Email Body', name: 'body', noValue: 'You must provide a body'},
+  { label: 'Recipient List', name: 'emails', noValue: 'You must provide recipients'},
 ]
 
 class SurveyForm extends Component { 
@@ -34,9 +34,11 @@ class SurveyForm extends Component {
 };
 function validate(values){
   const errors = {}
-  if (!values.title){
-    errors.title = "You must provide a title!";
-  }
+  _.each(FIELDS, ({ name, noValue })=>{
+    if(!values[name]){
+      errors[name] = noValue;
+    }
+  })
   return errors;
 }
 export default reduxForm({
